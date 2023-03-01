@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
 
 import reminderRoutes from './routes/reminder'
-import envVars from './config/environment_variables'
+import envVars from './config/environment-variables'
 
 const server: FastifyInstance = Fastify({})
 
