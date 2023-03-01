@@ -10,7 +10,7 @@
  + Typescript
  + tsup
  + tsx
-
+ + Prisma
 
 Feito com amor por Matheus Oliveira :heart:. Quiser me contatar, o lugar mais rápido é pelo LinkedIn.
 
