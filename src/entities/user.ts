@@ -1,9 +1,10 @@
-import { BaseEntity } from "./base-entity"
+import { BaseEntity } from './base-entity'
 
-type UserProps = {
+interface UserProps {
   firstName: string
   lastName?: string
   email: string
+  password: string
   createdAt: Date
   updatedAt?: Date
   deletedAt?: Date
@@ -14,7 +15,7 @@ type Replace<T, R> = Omit<T, keyof R> & R
 export class User extends BaseEntity {
   private readonly props: UserProps
 
-  constructor(props: Replace<UserProps, { createdAt?: Date }>, id?: string) {
+  constructor (props: Replace<UserProps, { createdAt?: Date }>, id?: string) {
     super(id)
 
     this.props = {
@@ -32,10 +33,10 @@ export class User extends BaseEntity {
   }
 
   public get lastName () {
-    return this.props.lastName!
+    return this.props.lastName ?? undefined
   }
 
-  public set lastName(value: string) {
+  public set lastName (value: string | undefined) {
     this.props.lastName = value
   }
 
@@ -43,31 +44,39 @@ export class User extends BaseEntity {
     return this.props.email
   }
 
-  public set email(value: string) {
+  public set email (value: string) {
     this.props.email = value
+  }
+
+  public get password () {
+    return this.props.password
+  }
+
+  public set password (value: string) {
+    this.props.password = value
   }
 
   public get createdAt () {
     return this.props.createdAt
   }
 
-  public set createdAt(value: Date) {
+  public set createdAt (value: Date) {
     this.props.createdAt = value
   }
 
   public get updatedAt () {
-    return this.props.updatedAt!
+    return this.props.updatedAt ?? undefined
   }
 
-  public set updatedAt(value: Date) {
+  public set updatedAt (value: Date | undefined) {
     this.props.updatedAt = value
   }
 
   public get deletedAt () {
-    return this.props.deletedAt!
+    return this.props.deletedAt ?? undefined
   }
 
-  public set deletedAt(value: Date) {
+  public set deletedAt (value: Date | undefined) {
     this.props.deletedAt = value
   }
 }

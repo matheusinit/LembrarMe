@@ -1,7 +1,7 @@
-import { User } from "../../entities/user";
-import { UserRepository } from "../../repository/user-repository";
+import { User } from '../../entities/user'
+import { type UserRepository } from '../../repository/user-repository'
 
-type CreateUserParams = {
+interface CreateUserParams {
   firstName: string
   lastName?: string
   email: string
@@ -11,17 +11,18 @@ type CreateUserParams = {
 export class CreateUser {
   private readonly userRepository: UserRepository
 
-  constructor(userRepository: UserRepository) {
+  constructor (userRepository: UserRepository) {
     this.userRepository = userRepository
   }
 
-  async execute(params: CreateUserParams) {
-    const {firstName, lastName, email, password} = params
+  async execute (params: CreateUserParams) {
+    const { firstName, lastName, email, password } = params
 
     const user = new User({
       firstName,
       lastName,
-      email
+      email,
+      password
     })
 
     await this.userRepository.createUser(user)

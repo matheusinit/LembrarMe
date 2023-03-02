@@ -1,18 +1,18 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
+import Fastify, { type FastifyInstance } from 'fastify'
 
 import reminderRoutes from './routes/reminder'
 import envVars from './config/environment-variables'
 
 const server: FastifyInstance = Fastify({})
 
-server.register(reminderRoutes)
+void server.register(reminderRoutes)
 
 const start = async () => {
   try {
     await server.listen({ port: envVars.PORT ?? 3000 })
 
     const address = server.server.address()
-    const port = typeof address === 'string' ? address : address?.port
+    const port = typeof address === 'string' ? address : String(address?.port)
 
     console.log(`Running on port ${port}`)
   } catch (err) {
@@ -20,4 +20,5 @@ const start = async () => {
     process.exit(1)
   }
 }
-start()
+
+void start()

@@ -1,5 +1,5 @@
-import { FastifyInstance, RouteShorthandOptions } from "fastify";
-import { listReminders } from "../usecases/reminders/list-reminders";
+import { type FastifyInstance, type RouteShorthandOptions } from 'fastify'
+import { listReminders } from '../usecases/reminders/list-reminders'
 
 const opts: RouteShorthandOptions = {
   schema: {
