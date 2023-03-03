@@ -11,6 +11,7 @@ export class UserRepositoryPrisma implements UserRepository {
       firstName: user.firstName,
       lastName: user.lastName ?? null,
       email: user.email,
+      password: user.password,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt ?? null,
       deletedAt: user.deletedAt ?? null
