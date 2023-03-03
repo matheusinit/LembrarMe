@@ -1,7 +1,7 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 
-import reminderRoutes from './routes/reminder'
 import fastifyEnv from '@fastify/env'
+import routes from './routes'
 
 const server: FastifyInstance = Fastify()
 
@@ -39,7 +39,7 @@ const start = async () => {
 
     await server.after()
 
-    await server.register(reminderRoutes)
+    await server.register(routes)
 
     await server.ready()
     await server.listen({ port: server.config.PORT ?? 3000, host: server.config.HOST ?? 'localhost' })

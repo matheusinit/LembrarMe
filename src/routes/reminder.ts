@@ -22,7 +22,7 @@ const opts: RouteShorthandOptions = {
   }
 }
 
-async function reminderRoutes (fastify: FastifyInstance, options) {
+async function reminderRoutes (fastify: FastifyInstance) {
   fastify.get('/', opts, async (request, reply) => {
     const reminders = listReminders()
 
