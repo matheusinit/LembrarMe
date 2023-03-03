@@ -56,4 +56,16 @@ describe('Create user', () => {
     expect(user.email).toBe('matheus@email.com')
     expect(user.password).toBe('hashed password')
   })
+
+  it('should have last name as undefined if not setted', async () => {
+    const createUser = makeSut()
+
+    const user = await createUser.execute({
+      firstName: 'Matheus',
+      email: 'matheus@email.com',
+      password: 'senha'
+    })
+
+    expect(user.lastName).toBeNull()
+  })
 })
