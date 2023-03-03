@@ -1,15 +1,48 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 
 import reminderRoutes from './routes/reminder'
-import envVars from './config/environment-variables'
+import fastifyEnv from '@fastify/env'
 
-const server: FastifyInstance = Fastify({})
+const server: FastifyInstance = Fastify()
 
-void server.register(reminderRoutes)
+declare module 'fastify' {
+  interface FastifyInstance {
+    config: { // this should be same as the confKey in options
+      PORT?: number
+      HOST?: string
+    }
+  }
+}
+
+const schema = {
+  type: 'object',
+  properties: {
+    PORT: {
+      type: 'number',
+      default: undefined
+    },
+    HOST: {
+      type: 'string',
+      default: undefined
+    }
+  }
+}
 
 const start = async () => {
   try {
-    await server.listen({ port: envVars.PORT ?? 3000 })
+    await server.register(fastifyEnv, {
+      data: process.env,
+      confKey: 'config',
+      dotenv: true,
+      schema
+    })
+
+    await server.after()
+
+    await server.register(reminderRoutes)
+
+    await server.ready()
+    await server.listen({ port: server.config.PORT ?? 3000, host: server.config.HOST ?? 'localhost' })
 
     const address = server.server.address()
     const port = typeof address === 'string' ? address : String(address?.port)
