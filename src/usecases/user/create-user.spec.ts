@@ -31,4 +31,21 @@ describe('Create user', () => {
 
     expect(user.password).not.toBe('senha')
   })
+
+  it('should return correct properties', async () => {
+    const userRepositoryStub = new UserRepositoryStub()
+    const hasherStub = new HasherStub()
+
+    const createUser = new CreateUser(userRepositoryStub, hasherStub)
+
+    const user = await createUser.execute({
+      firstName: 'Matheus',
+      email: 'matheus@email.com',
+      password: 'senha'
+    })
+
+    expect(user.firstName).toBe('Matheus')
+    expect(user.email).toBe('matheus@email.com')
+    expect(user.password).toBe('hashed password')
+  })
 })
