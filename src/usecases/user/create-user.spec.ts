@@ -32,9 +32,9 @@ const makeSut = () => {
 
 describe('Create user', () => {
   it('should return with password hashed', async () => {
-    const createUser = makeSut()
+    const sut = makeSut()
 
-    const user = await createUser.execute({
+    const user = await sut.execute({
       firstName: 'Matheus',
       email: 'matheus@email.com',
       password: 'senha'
@@ -44,9 +44,9 @@ describe('Create user', () => {
   })
 
   it('should return correct properties', async () => {
-    const createUser = makeSut()
+    const sut = makeSut()
 
-    const user = await createUser.execute({
+    const user = await sut.execute({
       firstName: 'Matheus',
       email: 'matheus@email.com',
       password: 'senha'
@@ -57,10 +57,10 @@ describe('Create user', () => {
     expect(user.password).toBe('hashed password')
   })
 
-  it('should have last name as undefined if not setted', async () => {
-    const createUser = makeSut()
+  it('should have last name as null if not setted', async () => {
+    const sut = makeSut()
 
-    const user = await createUser.execute({
+    const user = await sut.execute({
       firstName: 'Matheus',
       email: 'matheus@email.com',
       password: 'senha'
