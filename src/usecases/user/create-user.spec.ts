@@ -4,24 +4,35 @@ import { type HashGenerator } from '../../protocols/hash-generator'
 import { type UserRepository } from '../../repository/user-repository'
 import { CreateUser } from './create-user'
 
-class UserRepositoryStub implements UserRepository {
-  async createUser (user: User): Promise<void> {
-    await new Promise((resolve) => { resolve(null) })
+const makeUserRepositoryStub = () => {
+  class UserRepositoryStub implements UserRepository {
+    async createUser (user: User): Promise<void> {
+      await new Promise((resolve) => { resolve(null) })
+    }
   }
+
+  return new UserRepositoryStub()
 }
 
-class HasherStub implements HashGenerator {
-  hash (password: string): string {
-    return 'hashed password'
+const makeHasherStub = () => {
+  class HasherStub implements HashGenerator {
+    hash (password: string): string {
+      return 'hashed password'
+    }
   }
+
+  return new HasherStub()
+}
+
+const makeSut = () => {
+  const userRepositoryStub = makeUserRepositoryStub()
+  const hasherStub = makeHasherStub()
+  return new CreateUser(userRepositoryStub, hasherStub)
 }
 
 describe('Create user', () => {
   it('should return with password hashed', async () => {
-    const userRepositoryStub = new UserRepositoryStub()
-    const hasherStub = new HasherStub()
-
-    const createUser = new CreateUser(userRepositoryStub, hasherStub)
+    const createUser = makeSut()
 
     const user = await createUser.execute({
       firstName: 'Matheus',
@@ -33,10 +44,7 @@ describe('Create user', () => {
   })
 
   it('should return correct properties', async () => {
-    const userRepositoryStub = new UserRepositoryStub()
-    const hasherStub = new HasherStub()
-
-    const createUser = new CreateUser(userRepositoryStub, hasherStub)
+    const createUser = makeSut()
 
     const user = await createUser.execute({
       firstName: 'Matheus',
