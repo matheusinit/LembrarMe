@@ -1,5 +1,5 @@
 import { describe, expect, it, vitest } from 'vitest'
-import { InMemoryReminderRepository } from '../../database/in-memory/in-memory-reminder-repository'
+import { InMemoryReminderRepository } from '../../../database/in-memory/in-memory-reminder-repository'
 import { CreateReminder } from './create-reminder'
 
 const makeInMemoryReminderRepository = () => {

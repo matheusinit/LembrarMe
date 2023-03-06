@@ -1,5 +1,5 @@
-import { Reminder } from '../../entities/reminder'
-import { type ReminderRepository } from '../../repository/reminder-repository'
+import { Reminder } from '../../../entities/reminder'
+import { type ReminderRepository } from '../../../repository/reminder-repository'
 
 interface CreateReminderParams {
   name: string
