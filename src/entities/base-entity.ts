@@ -1,8 +1,12 @@
+import { CuidGenerator } from '../utils/cuid-generator'
+
 export class BaseEntity {
   private readonly _id: string
 
   constructor (id?: string) {
-    this._id = id ?? '1'
+    const cuidGenerator = new CuidGenerator()
+
+    this._id = id ?? cuidGenerator.generate()
   }
 
   public get id () {
