@@ -21,7 +21,7 @@ async function userRoutes (fastify: FastifyInstance) {
 
       if (paramIsUndefined) {
         return await reply.code(400).send({
-          message: `Param '${param}' not inserted`
+          message: `Param '${param}' not specified`
         })
       }
     })
