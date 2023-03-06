@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { InMemoryUserRepository } from '../../database/repository/in-memory/in-memory-user-repository'
+import { type EmailValidator } from '../../protocols/email-validator'
 import { type HashGenerator } from '../../protocols/hash-generator'
 import { CreateUser } from './create-user'
 
@@ -19,10 +20,21 @@ const makeHasherStub = () => {
   return new HasherStub()
 }
 
+const makeEmailValidatorStub = () => {
+  class EmailValidatorStub implements EmailValidator {
+    check (email: string): boolean {
+      return true
+    }
+  }
+
+  return new EmailValidatorStub()
+}
+
 const makeSut = () => {
   const userRepositoryStub = makeUserRepositoryStub()
   const hasherStub = makeHasherStub()
-  return new CreateUser(userRepositoryStub, hasherStub)
+  const emailValidatorStub = makeEmailValidatorStub()
+  return new CreateUser(userRepositoryStub, hasherStub, emailValidatorStub)
 }
 
 describe('Create user', () => {
