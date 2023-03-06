@@ -1,17 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { type User } from '../../entities/user'
+import { InMemoryUserRepository } from '../../database/repository/in-memory/in-memory-user-repository'
 import { type HashGenerator } from '../../protocols/hash-generator'
-import { type UserRepository } from '../../repository/user-repository'
 import { CreateUser } from './create-user'
 
 const makeUserRepositoryStub = () => {
-  class UserRepositoryStub implements UserRepository {
-    async createUser (user: User): Promise<void> {
-      await new Promise((resolve) => { resolve(null) })
-    }
-  }
+  const inMemoryUserRepository = new InMemoryUserRepository()
 
-  return new UserRepositoryStub()
+  return inMemoryUserRepository
 }
 
 const makeHasherStub = () => {
