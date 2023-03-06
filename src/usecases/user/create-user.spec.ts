@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 import { InMemoryUserRepository } from '../../database/repository/in-memory/in-memory-user-repository'
 import { type EmailValidator } from '../../protocols/email-validator'
 import { type HashGenerator } from '../../protocols/hash-generator'
@@ -34,12 +34,19 @@ const makeSut = () => {
   const userRepositoryStub = makeUserRepositoryStub()
   const hasherStub = makeHasherStub()
   const emailValidatorStub = makeEmailValidatorStub()
-  return new CreateUser(userRepositoryStub, hasherStub, emailValidatorStub)
+  const sut = new CreateUser(userRepositoryStub, hasherStub, emailValidatorStub)
+
+  return {
+    userRepositoryStub,
+    hasherStub,
+    emailValidatorStub,
+    sut
+  }
 }
 
 describe('Create user', () => {
   it('should return with password hashed', async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const user = await sut.execute({
       firstName: 'Matheus',
@@ -51,7 +58,7 @@ describe('Create user', () => {
   })
 
   it('should return correct properties', async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const user = await sut.execute({
       firstName: 'Matheus',
@@ -65,7 +72,7 @@ describe('Create user', () => {
   })
 
   it('should have last name as null if not setted', async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const user = await sut.execute({
       firstName: 'Matheus',
@@ -74,5 +81,18 @@ describe('Create user', () => {
     })
 
     expect(user.lastName).toBeNull()
+  })
+
+  it('should throw an error if email is invalid', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    vitest.spyOn(emailValidatorStub, 'check').mockReturnValueOnce(false)
+
+    const promise = sut.execute({
+      firstName: 'Matheus',
+      email: 'invalid email',
+      password: 'senha'
+    })
+
+    void expect(promise).rejects.toThrowError()
   })
 })
