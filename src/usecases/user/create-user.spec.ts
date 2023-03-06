@@ -1,5 +1,5 @@
 import { describe, expect, it, vitest } from 'vitest'
-import { InMemoryUserRepository } from '../../database/repository/in-memory/in-memory-user-repository'
+import { InMemoryUserRepository } from '../../database/in-memory/in-memory-user-repository'
 import { type EmailValidator } from '../../protocols/email-validator'
 import { type HashGenerator } from '../../protocols/hash-generator'
 import { CreateUser } from './create-user'

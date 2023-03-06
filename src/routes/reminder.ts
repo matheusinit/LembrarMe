@@ -28,6 +28,10 @@ async function reminderRoutes (fastify: FastifyInstance) {
 
     return reminders
   })
+
+  // fastify.post('/', {}, async (request, reply) => {
+
+  // })
 }
 
 export default reminderRoutes

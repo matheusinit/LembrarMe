@@ -1,4 +1,5 @@
 import { BaseEntity } from './base-entity'
+import { type Replace } from '../types/replace'
 
 interface UserProps {
   firstName: string
@@ -9,8 +10,6 @@ interface UserProps {
   updatedAt?: Date
   deletedAt?: Date
 }
-
-type Replace<T, R> = Omit<T, keyof R> & R
 
 export class User extends BaseEntity {
   private readonly props: UserProps
