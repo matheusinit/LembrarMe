@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/env": "^4.2.0",
+    "@paralleldrive/cuid2": "^2.2.0",
     "@prisma/client": "^4.11.0",
     "fastify": "^4.13.0",
     "prisma": "^4.11.0"
