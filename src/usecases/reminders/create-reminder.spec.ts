@@ -50,14 +50,23 @@ describe('Create reminder', () => {
       userId: 'some-random-id'
     })
 
+    expect(reminder.id).toBeTypeOf('string')
+    expect(reminder.name).toBe('Read compiler\'s book')
+    expect(reminder.userId).toBe('some-random-id')
+  })
+
+  it('should not return the same id', async () => {
+    const { sut } = makeSut()
+
+    const reminder = await sut.execute({
+      name: 'Read compiler\'s book',
+      userId: 'some-random-id'
+    })
+
     const reminder2 = await sut.execute({
       name: 'Watch some Akita\'s video',
       userId: 'some-random-id'
     })
-
-    expect(reminder.id).toBeTypeOf('string')
-    expect(reminder.name).toBe('Read compiler\'s book')
-    expect(reminder.userId).toBe('some-random-id')
 
     expect(reminder.id).not.toEqual(reminder2.id)
   })
