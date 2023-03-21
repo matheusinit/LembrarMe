@@ -8,7 +8,7 @@ export class InMemoryUserRepository implements UserRepository {
     this.users = []
   }
 
-  get list () {
+  async list () {
     return this.users
   }
 

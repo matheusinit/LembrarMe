@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 import { UserRepositoryPrisma } from '../database/prisma/user-repository-prisma'
 import { CreateUser } from '../usecases/user/create-user'
+import { ListUsers } from '../usecases/user/list-users'
 import { ScryptHasher } from '../utils/scrypt-hasher'
 import { ZodEmailValidator } from '../utils/zod-email-validator'
 
@@ -49,6 +50,15 @@ async function userRoutes (fastify: FastifyInstance) {
     } catch (error) {
       return await reply.code(500).send({ statusCode: 500, message: 'An internal error has occured' })
     }
+  })
+
+  fastify.get('/', {}, async (request, reply) => {
+    const prismaUserRepository = new UserRepositoryPrisma()
+    const listUsers = new ListUsers(prismaUserRepository)
+
+    const users = await listUsers.execute()
+
+    return await reply.code(200).send(users)
   })
 }
 

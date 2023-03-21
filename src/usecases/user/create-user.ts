@@ -13,7 +13,7 @@ interface CreateUserParams {
 
 export class CreateUser {
   private readonly userRepository: UserRepository
-  private readonly hasher: HashGenerat
+  private readonly hasher: HashGenerator
   private readonly emailValidator: EmailValidator
 
   constructor (userRepository: UserRepository, hasher: HashGenerator, emailValidator: EmailValidator) {
