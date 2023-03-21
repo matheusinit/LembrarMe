@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { UserRepositoryPrisma } from '../database/prisma/user-repository-prisma'
 import { CreateUser } from '../usecases/user/create-user'
-import { Hasher } from '../utils/hasher'
+import { ScryptHasher } from '../utils/scrypt-hasher'
 import { ZodEmailValidator } from '../utils/zod-email-validator'
 
 async function userRoutes (fastify: FastifyInstance) {
@@ -35,7 +35,7 @@ async function userRoutes (fastify: FastifyInstance) {
       await Promise.all(promises)
 
       const userRepository = new UserRepositoryPrisma()
-      const hasher = new Hasher()
+      const hasher = new ScryptHasher()
       const emailValidator = new ZodEmailValidator()
       const createUser = new CreateUser(userRepository, hasher, emailValidator)
 

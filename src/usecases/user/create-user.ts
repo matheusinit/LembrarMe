@@ -1,8 +1,8 @@
 import { User } from '../../entities/user'
 import { mapUserToRaw } from '../../mapper/user-mapper'
 import { type EmailValidator } from '../../protocols/email-validator'
+import { type HashGenerator } from '../../protocols/hash-generator'
 import { type UserRepository } from '../../repository/user-repository'
-import { type Hasher } from '../../utils/hasher'
 
 interface CreateUserParams {
   firstName: string
@@ -13,10 +13,10 @@ interface CreateUserParams {
 
 export class CreateUser {
   private readonly userRepository: UserRepository
-  private readonly hasher: Hasher
+  private readonly hasher: HashGenerat
   private readonly emailValidator: EmailValidator
 
-  constructor (userRepository: UserRepository, hasher: Hasher, emailValidator: EmailValidator) {
+  constructor (userRepository: UserRepository, hasher: HashGenerator, emailValidator: EmailValidator) {
     this.userRepository = userRepository
     this.hasher = hasher
     this.emailValidator = emailValidator
