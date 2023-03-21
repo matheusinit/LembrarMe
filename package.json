@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup ./src/",
-    "test": "vitest"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit --pretty"
   },
   "keywords": [],
   "author": "",
