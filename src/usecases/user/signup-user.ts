@@ -2,16 +2,10 @@ import { User } from '../../entities/user'
 import { mapUserToRaw } from '../../mapper/user-mapper'
 import { type EmailValidator } from '../../protocols/email-validator'
 import { type HashGenerator } from '../../protocols/hash-generator'
+import { type CreateUserParams, type SignupUserUsecase } from '../../protocols/signup-user-usecase'
 import { type UserRepository } from '../../repository/user-repository'
 
-interface CreateUserParams {
-  firstName: string
-  lastName?: string
-  email: string
-  password: string
-}
-
-export class CreateUser {
+export class SignupUser implements SignupUserUsecase {
   private readonly userRepository: UserRepository
   private readonly hasher: HashGenerator
   private readonly emailValidator: EmailValidator

@@ -2,7 +2,7 @@ import { describe, expect, it, vitest } from 'vitest'
 import { InMemoryUserRepository } from '../../database/in-memory/in-memory-user-repository'
 import { type EmailValidator } from '../../protocols/email-validator'
 import { type HashGenerator } from '../../protocols/hash-generator'
-import { CreateUser } from './create-user'
+import { SignupUser } from './signup-user'
 
 const makeUserRepositoryStub = () => {
   const inMemoryUserRepository = new InMemoryUserRepository()
@@ -34,7 +34,7 @@ const makeSut = () => {
   const userRepositoryStub = makeUserRepositoryStub()
   const hasherStub = makeHasherStub()
   const emailValidatorStub = makeEmailValidatorStub()
-  const sut = new CreateUser(userRepositoryStub, hasherStub, emailValidatorStub)
+  const sut = new SignupUser(userRepositoryStub, hasherStub, emailValidatorStub)
 
   return {
     userRepositoryStub,

@@ -1,9 +1,7 @@
+import { type User } from '@prisma/client'
 import { z } from 'zod'
-import { UserRepositoryPrisma } from '../database/prisma/user-repository-prisma'
-import { type User } from '../entities/user'
-import { CreateUser } from '../usecases/user/create-user'
-import { ScryptHasher } from '../utils/scrypt-hasher'
-import { ZodEmailValidator } from '../utils/zod-email-validator'
+import { type SignupUserUsecase } from '../protocols/signup-user-usecase'
+import { type SignupUser } from '../usecases/user/signup-user'
 
 const CreateUserSchema = z.object({
   email: z.string(),
@@ -49,7 +47,11 @@ const internalServerError = (message?: string) => {
   }
 }
 
-export class CreateUserController {
+export class SignUpUserController {
+  constructor (
+    private readonly signupUser: SignupUserUsecase
+  ) {}
+
   async handle (request: ControllerRequest): Promise<ControllerResponse<User | HttpError>> {
     try {
       const { firstName, lastName, email, password } = request
@@ -66,12 +68,7 @@ export class CreateUserController {
 
       await Promise.all(promises)
 
-      const userRepository = new UserRepositoryPrisma()
-      const hasher = new ScryptHasher()
-      const emailValidator = new ZodEmailValidator()
-      const createUser = new CreateUser(userRepository, hasher, emailValidator)
-
-      const user = await createUser.execute({
+      const user = await this.signupUser.execute({
         email,
         firstName,
         lastName,
@@ -80,6 +77,7 @@ export class CreateUserController {
 
       return ok(user)
     } catch (error) {
+      console.log(error)
       return internalServerError('Something happened at creation of user')
     }
   }
