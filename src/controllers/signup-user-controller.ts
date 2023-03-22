@@ -2,6 +2,7 @@ import { type User } from '@prisma/client'
 import { z } from 'zod'
 import { type SignupUserUsecase } from '../protocols/signup-user-usecase'
 import { type SignupUser } from '../usecases/user/signup-user'
+import { badRequest, internalServerError, ok } from '../utils/http'
 
 const CreateUserSchema = z.object({
   email: z.string(),
@@ -15,36 +16,6 @@ type ControllerRequest = z.infer<typeof CreateUserSchema>
 interface ControllerResponse<T> {
   statusCode: number
   body: T
-}
-
-interface HttpError extends Error {
-  message: string
-}
-
-const httpError = (name: string, message: string) => ({
-  name,
-  message
-})
-
-const badRequest = (message: string) => {
-  return {
-    statusCode: 400,
-    body: httpError('Bad request', message)
-  }
-}
-
-const ok = (data: any) => {
-  return {
-    statusCode: 200,
-    body: data
-  }
-}
-
-const internalServerError = (message?: string) => {
-  return {
-    statusCode: 500,
-    body: httpError('Internal server error', message ?? 'An internal server error occured')
-  }
 }
 
 export class SignUpUserController {
