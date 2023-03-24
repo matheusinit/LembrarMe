@@ -1,7 +1,7 @@
 import { type User } from '@prisma/client'
 import { z } from 'zod'
+import { type HttpError } from '../protocols/http-error'
 import { type SignupUserUsecase } from '../protocols/signup-user-usecase'
-import { type SignupUser } from '../usecases/user/signup-user'
 import { badRequest, internalServerError, ok } from '../utils/http'
 
 const CreateUserSchema = z.object({
@@ -47,9 +47,14 @@ export class SignUpUserController {
       })
 
       return ok(user)
-    } catch (error) {
-      console.log(error)
-      return internalServerError('Something happened at creation of user')
+    } catch (err) {
+      const error = err as Error
+
+      if (error.message === 'Invalid email address') {
+        return badRequest(error.message)
+      }
+
+      return internalServerError(error.message)
     }
   }
 }
