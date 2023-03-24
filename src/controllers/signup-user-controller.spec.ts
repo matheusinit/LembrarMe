@@ -1,4 +1,4 @@
-import { expect, it, describe } from 'vitest'
+import { expect, it, describe, vitest } from 'vitest'
 import { User } from '../entities/user'
 import { mapUserToRaw } from '../mapper/user-mapper'
 import { type CreateUserParams, type SignupUserUsecase } from '../protocols/signup-user-usecase'
@@ -29,6 +29,23 @@ describe('Sign up user controller', () => {
     })
 
     expect(response.statusCode).toBe(200)
+    expect(response.body).not.toBeNull()
+  })
+
+  it('should return a bad request if email is not valid', async () => {
+    const signupUserStub = new SignupUserStub()
+    const sut = new SignUpUserController(signupUserStub)
+    vitest.spyOn(signupUserStub, 'execute').mockReturnValueOnce(new Promise((resolve, reject) => {
+      reject(new Error('Invalid email address'))
+    }))
+
+    const response = await sut.handle({
+      firstName: 'test user',
+      email: 'test_user_email',
+      password: 'password'
+    })
+
+    expect(response.statusCode).toBe(400)
     expect(response.body).not.toBeNull()
   })
 })
