@@ -1,5 +1,12 @@
 version: '3.7'
 services:
+  reverse_proxy:
+    container_name: remainder_reverse_proxy
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
   api:
     container_name: reaminder_api
     image: matheusinit/nodejs_cicd
