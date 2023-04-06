@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   api:
-    container_name: reaminder_db
+    container_name: reaminder_api
     image: matheusinit/nodejs_cicd
     environment:
       PORT: 5000
