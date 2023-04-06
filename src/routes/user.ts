@@ -1,18 +1,12 @@
 import { type FastifyInstance } from 'fastify'
 import { SignUpUserController } from '../controllers/signup-user-controller'
 import { UserRepositoryPrisma } from '../database/prisma/user-repository-prisma'
+import { makeSignupUserFactory } from '../factories/sign-up-user-factory'
 import { ListUsers } from '../usecases/user/list-users'
-import { SignupUser } from '../usecases/user/signup-user'
-import { ScryptHasher } from '../utils/scrypt-hasher'
-import { ZodEmailValidator } from '../utils/zod-email-validator'
 
 async function userRoutes (fastify: FastifyInstance) {
   fastify.post('/', {}, async (request, reply) => {
-    const userRepository = new UserRepositoryPrisma()
-    const hasher = new ScryptHasher()
-    const emailValidator = new ZodEmailValidator()
-
-    const usecase = new SignupUser(userRepository, hasher, emailValidator)
+    const usecase = makeSignupUserFactory()
 
     const controller = new SignUpUserController(usecase)
 
