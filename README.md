@@ -12,6 +12,7 @@
 #### Projeto
 
 É um projeto de **lembretes** já que esqueço muito das coisas :worried:. E decidi colocar em práticas algumas coisas que gosto. Espero que curta o código :grin:.
+Esse projeto tem o objetivo de ser simpels e não é pra produção e muito mais para demonstrar conhecimentos da cultura DevOps e Cloud.
 
 #### :wrench: Tecnologias
  + Fastify
@@ -21,6 +22,9 @@
  + tsx
  + Prisma
  + Docker
+ + Azure
+
+ _Utilizando Azure pois não tenho acesso aos serviços AWS :/. Mas os conhecimentos são aplicados da mesma forma a outra tecnologia.
 
 Feito com amor por Matheus Oliveira :heart:. Quiser me contatar, o lugar mais rápido é pelo LinkedIn.
 
