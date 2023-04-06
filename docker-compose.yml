@@ -1,15 +1,22 @@
 version: '3.7'
-
 services:
+  api:
+    container_name: reaminder_db
+    image: matheusinit/nodejs_cicd
+    environment:
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
   database:
     container_name: remainder_db
-    image: postgres:14 
+    image: postgres:14
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-       - /usr/docker/postgresql/remainder/:/data/postgres
+      - /usr/docker/postgresql/remainder/:/data/postgres
     ports:
       - "5432:5432"
     restart: unless-stopped
