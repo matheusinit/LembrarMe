@@ -73,40 +73,40 @@ jobs:
         with:
           name: build
           path: build
-          # release:
-          #   environment:
-          #     name: production
-          #     url: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic-release.outputs.release-tag }}
-          #   name: Semantic-release
-          #   needs:
-          #     - test
-          #     - docker
-          #     - build
-          #   runs-on: ubuntu-22.04
-          #   steps:
-          #     - name: "☁️ checkout repository"
-          #       uses: actions/checkout@v2
-          #       with:
-          #         fetch-depth: 0
-          #     - name: "📂 download docker artifacts"
-          #       uses: actions/download-artifact@v2
-          #       with:
-          #         name: docker
-          #         path: /tmp
-          #     - name: "📂 download diagram artifacts"
-          #       uses: actions/download-artifact@v2
-          #       with:
-          #         name: diagram
-          #         path: .
-          #     - name: "🚀 release"
-          #       id: semantic-release
-          #       uses: open-sauced/semantic-release-conventional-config@v3
-          #       env:
-          #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release:
+    environment:
+      name: production
+      url: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic-release.outputs.release-tag }}
+    name: Semantic-release
+    needs:
+      - test
+      - docker
+      - build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "📂 download docker artifacts"
+        uses: actions/download-artifact@v2
+        with:
+          name: docker
+          path: /tmp
+      - name: "📂 download diagram artifacts"
+        uses: actions/download-artifact@v2
+        with:
+          name: diagram
+          path: .
+          # - name: "🚀 release"
+          #   id: semantic-release
+          #   uses: open-sauced/semantic-release-conventional-config@v3
+          #   env:
+          #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   cleanup:
     name: Cleanup actions
-    # needs:
-    # - release
+    needs:
+      - release
     runs-on: ubuntu-22.04
     steps:
       - name: "♻️ remove build artifacts"
