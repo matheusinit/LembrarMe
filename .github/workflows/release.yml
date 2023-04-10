@@ -16,7 +16,7 @@ jobs:
       - name: "🔧 setup buildx"
         uses: docker/setup-buildx-action@v2.5.0
       - name: "🔧 cache docker layers"
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -61,7 +61,7 @@ jobs:
         id: diagram
         uses: githubocto/repo-visualizer@0.7.1
         with:
-          excluded_paths: "node_modules,build,.github"
+          excluded_paths: "node_modules,dist,.github"
           output_file: "public/diagram.svg"
           should_push: false
           root_path: "src/"
@@ -72,12 +72,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build
+          path: dist
   release:
-    environment:
-      name: production
-      url: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic-release.outputs.release-tag }}
-    name: Semantic-release
+    name: Release in deploy server
     needs:
       - test
       - docker
@@ -98,11 +95,9 @@ jobs:
         with:
           name: diagram
           path: .
-          # - name: "🚀 release"
-          #   id: semantic-release
-          #   uses: open-sauced/semantic-release-conventional-config@v3
-          #   env:
-          #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "🚀 release"
+        run: |
+          echo "Hello World"
   cleanup:
     name: Cleanup actions
     needs:
