@@ -41,76 +41,76 @@ jobs:
         with:
           name: docker
           path: /tmp/docker.tar
-    build:
-      name: Build application
-      runs-on: ubuntu-20.04
-      steps:
-        - name: "☁️  checkout repository"
-          uses: actions/checkout@v3
-        - name: "🔧 setup node"
-          uses: actions/setup-node@v2
-          with:
-            node-version: 18
-        - name: "🔧 install npm@latest"
-          run: npm i -g npm@latest
-        - name: "📦 install dependencies"
-          uses: bahmutov/npm-install@v1
-        - name: "📊 repository visualizer"
-          id: diagram
-          uses: githubocto/repo-visualizer@0.7.1
-          with:
-            excluded_paths: "node_modules,build,.github"
-            output_file: "public/diagram.svg"
-            should_push: false
-            root_path: "src/"
-            artifact_name: "diagram"
-        - name: "🚀 app"
-          run: npm run build
-        - name: "📂 production artifacts"
-          uses: actions/upload-artifact@v2
-          with:
-            name: build
-            path: build
-    # release:
-    #   environment:
-    #     name: production
-    #     url: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic-release.outputs.release-tag }}
-    #   name: Semantic-release
-    #   needs:
-    #     - test
-    #     - docker
-    #     - build
-    #   runs-on: ubuntu-22.04
-    #   steps:
-    #     - name: "☁️ checkout repository"
-    #       uses: actions/checkout@v2
-    #       with:
-    #         fetch-depth: 0
-    #     - name: "📂 download docker artifacts"
-    #       uses: actions/download-artifact@v2
-    #       with:
-    #         name: docker
-    #         path: /tmp
-    #     - name: "📂 download diagram artifacts"
-    #       uses: actions/download-artifact@v2
-    #       with:
-    #         name: diagram
-    #         path: .
-    #     - name: "🚀 release"
-    #       id: semantic-release
-    #       uses: open-sauced/semantic-release-conventional-config@v3
-    #       env:
-    #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    cleanup:
-      name: Cleanup actions
-      needs:
-        - release
-      runs-on: ubuntu-22.04
-      steps:
-        - name: "♻️ remove build artifacts"
-          uses: geekyeggo/delete-artifact@v1
-          with:
-            name: |
-              build
-              docker
-              diagram
+  build:
+    name: Build application
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "☁️  checkout repository"
+        uses: actions/checkout@v3
+      - name: "🔧 setup node"
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: "🔧 install npm@latest"
+        run: npm i -g npm@latest
+      - name: "📦 install dependencies"
+        uses: bahmutov/npm-install@v1
+      - name: "📊 repository visualizer"
+        id: diagram
+        uses: githubocto/repo-visualizer@0.7.1
+        with:
+          excluded_paths: "node_modules,build,.github"
+          output_file: "public/diagram.svg"
+          should_push: false
+          root_path: "src/"
+          artifact_name: "diagram"
+      - name: "🚀 app"
+        run: npm run build
+      - name: "📂 production artifacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
+          # release:
+          #   environment:
+          #     name: production
+          #     url: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic-release.outputs.release-tag }}
+          #   name: Semantic-release
+          #   needs:
+          #     - test
+          #     - docker
+          #     - build
+          #   runs-on: ubuntu-22.04
+          #   steps:
+          #     - name: "☁️ checkout repository"
+          #       uses: actions/checkout@v2
+          #       with:
+          #         fetch-depth: 0
+          #     - name: "📂 download docker artifacts"
+          #       uses: actions/download-artifact@v2
+          #       with:
+          #         name: docker
+          #         path: /tmp
+          #     - name: "📂 download diagram artifacts"
+          #       uses: actions/download-artifact@v2
+          #       with:
+          #         name: diagram
+          #         path: .
+          #     - name: "🚀 release"
+          #       id: semantic-release
+          #       uses: open-sauced/semantic-release-conventional-config@v3
+          #       env:
+          #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  cleanup:
+    name: Cleanup actions
+    needs:
+      - release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "♻️ remove build artifacts"
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            build
+            docker
+            diagram
