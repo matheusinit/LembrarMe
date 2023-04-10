@@ -53,6 +53,8 @@ jobs:
           node-version: 18
       - name: "🔧 install npm@latest"
         run: npm i -g npm@latest
+      - name: "📦 generate package-lock.json"
+        run: npm i --package-lock-only
       - name: "📦 install dependencies"
         uses: bahmutov/npm-install@v1
       - name: "📊 repository visualizer"
