@@ -33,9 +33,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=docker, dest=/tmp/docker.tar
-          push: false
-          cache-from: type=gha, scope=${{ github.workflow }}
-          cache-to: type=gha, scope=${{ github.workflow }}
+          push: true
       - name: "📂 docker artifacts"
         uses: actions/upload-artifact@v2
         with:
@@ -97,7 +95,16 @@ jobs:
           path: .
       - name: "🚀 release"
         run: |
-          echo "Hello World"
+          scp -i {{ secrets.CERT_FILE }} -o "StrictHostKeyChecking=no" ./docker-compose.yml ${{ secrets.DEPLOY_SERVER }}:~/nodejs_cicd/
+          ssh -i {{ secrets.CERT_FILE }} -o "StrictHostKeyChecking=no" ${{ secrets.DEPLOY_SERVER }} << 'ENDSSH'
+            cd ~/nodejs_cicd
+            docker compose down
+            docker compose pull
+            docker compose up --build -d
+
+            docker image prune
+            rm ./docker-compose.yml
+          ENDSSH
   cleanup:
     name: Cleanup actions
     needs:
