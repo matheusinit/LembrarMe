@@ -103,8 +103,8 @@ jobs:
           #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   cleanup:
     name: Cleanup actions
-    needs:
-      - release
+    # needs:
+    # - release
     runs-on: ubuntu-22.04
     steps:
       - name: "♻️ remove build artifacts"
