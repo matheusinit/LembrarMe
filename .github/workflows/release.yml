@@ -34,65 +34,60 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=docker, dest=/tmp/docker.tar
           push: true
-      - name: "📂 docker artifacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: docker
-          path: /tmp/docker.tar
-  build:
-    name: Build application
-    runs-on: ubuntu-20.04
-    steps:
-      - name: "☁️  checkout repository"
-        uses: actions/checkout@v3
-      - name: "🔧 setup node"
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-      - name: "🔧 install npm@latest"
-        run: npm i -g npm@latest
-      - name: "📦 generate package-lock.json"
-        run: npm i --package-lock-only
-      - name: "📦 install dependencies"
-        uses: bahmutov/npm-install@v1
-      - name: "📊 repository visualizer"
-        id: diagram
-        uses: githubocto/repo-visualizer@0.7.1
-        with:
-          excluded_paths: "node_modules,dist,.github"
-          output_file: "public/diagram.svg"
-          should_push: false
-          root_path: "src/"
-          artifact_name: "diagram"
-      - name: "🚀 app"
-        run: npm run build
-      - name: "📂 production artifacts"
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: dist
+  # build:
+  #   name: Build application
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: "☁️  checkout repository"
+  #       uses: actions/checkout@v3
+  #     - name: "🔧 setup node"
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 18
+  #     - name: "🔧 install npm@latest"
+  #       run: npm i -g npm@latest
+  #     - name: "📦 generate package-lock.json"
+  #       run: npm i --package-lock-only
+  #     - name: "📦 install dependencies"
+  #       uses: bahmutov/npm-install@v1
+  #     - name: "📊 repository visualizer"
+  #       id: diagram
+  #       uses: githubocto/repo-visualizer@0.7.1
+  #       with:
+  #         excluded_paths: "node_modules,dist,.github"
+  #         output_file: "public/diagram.svg"
+  #         should_push: false
+  #         root_path: "src/"
+  #         artifact_name: "diagram"
+  #     - name: "🚀 app"
+  #       run: npm run build
+  #     - name: "📂 production artifacts"
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: build
+  #         path: dist
   release:
     name: Release in deploy server
     needs:
       - test
       - docker
-      - build
+      # - build
     runs-on: ubuntu-20.04
     steps:
       - name: "☁️ checkout repository"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "📂 download docker artifacts"
-        uses: actions/download-artifact@v2
-        with:
-          name: docker
-          path: /tmp
-      - name: "📂 download diagram artifacts"
-        uses: actions/download-artifact@v2
-        with:
-          name: diagram
-          path: .
+      # - name: "📂 download docker artifacts"
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: docker
+      #     path: /tmp
+      # - name: "📂 download diagram artifacts"
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: diagram
+      #     path: .
       - name: "🚀 release"
         run: |
           scp -i {{ secrets.CERT_FILE }} -o "StrictHostKeyChecking=no" ./docker-compose.yml ${{ secrets.DEPLOY_SERVER }}:~/nodejs_cicd/
