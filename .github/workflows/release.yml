@@ -32,7 +32,6 @@ jobs:
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=docker, dest=/tmp/docker.tar
           push: true
   # build:
   #   name: Build application
