@@ -15,10 +15,12 @@ RUN npm ci
 # Move all source code to generate build
 COPY ./src ./src
 
+# Create prisma artifacts
+RUN npx prisma generate
+
 # Build
 RUN npm run build
 
-RUN npx prisma generate
 
 # Run server on container entrypoint
 CMD ["node", "dist/server.js"]
