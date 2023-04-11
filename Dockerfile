@@ -12,15 +12,19 @@ RUN npm i --package-lock-only
 # Install all dependencies to generate the build
 RUN npm ci
 
+# Create prisma artifacts
+RUN npx prisma generate
+
 # Move all source code to generate build
 COPY ./src ./src
 
-# Create prisma artifacts
-RUN npx prisma generate
+# Move prisma
+COPY ./prisma ./prisma
 
 # Build
 RUN npm run build
 
+RUN ls
 
 # Run server on container entrypoint
 CMD ["node", "dist/server.js"]
