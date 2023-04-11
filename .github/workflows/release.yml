@@ -96,7 +96,7 @@ jobs:
         run: |
           echo "${{ secrets.CERT_FILE }}" | tr -d '\r' > cert.pem
           chmod 400 cert.pem
-          scp -i cert.pem -o "StrictHostKeyChecking=no" ./docker-compose.yml ${{ secrets.DEPLOY_SERVER }}:~/nodejs_cicd/
+          scp -i cert.pem -o "StrictHostKeyChecking=no" ./docker-compose.yml ${{ secrets.DEPLOY_SERVER }}:~/nodejs_cicd/docker-compose.yml
           ssh -i cert.pem -o "StrictHostKeyChecking=no" ${{ secrets.DEPLOY_SERVER }} << 'ENDSSH'
             cd ~/nodejs_cicd
             docker compose down
