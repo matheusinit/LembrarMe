@@ -26,6 +26,11 @@ jobs:
         with:
           images: ${{ github.repository }}
           tags: latest
+      - name: "login to docker"
+        uses: docker/login-action@2.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: "📦 docker build"
         uses: docker/build-push-action@v4
         with:
