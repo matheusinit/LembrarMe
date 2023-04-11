@@ -18,7 +18,7 @@ COPY ./src ./src
 # Build
 RUN npm run build
 
-RUN npm prisma generate
+RUN npx prisma generate
 
 # Run server on container entrypoint
 CMD ["node", "dist/server.js"]
