@@ -26,6 +26,9 @@ jobs:
         with:
           images: ${{ github.repository }}
           tags: latest
+      - name: see secret
+        run: |
+          echo ${{ secrets.DOCKERHUB_USERNAME }}
       - name: login to docker
         uses: docker/login-action@v2.1.0
         with:
