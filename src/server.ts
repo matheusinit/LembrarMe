@@ -42,7 +42,7 @@ const start = async () => {
     await server.register(routes)
 
     await server.ready()
-    await server.listen({ port: server.config.PORT ?? 3000, host: server.config.HOST ?? 'localhost' })
+    await server.listen({ port: server.config.PORT ?? 3000, host: server.config.HOST ?? '0.0.0.0' })
 
     const address = server.server.address()
     const port = typeof address === 'string' ? address : String(address?.port)
