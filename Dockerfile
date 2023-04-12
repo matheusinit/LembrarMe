@@ -12,14 +12,14 @@ RUN npm i --package-lock-only
 # Install all dependencies to generate the build
 RUN npm ci
 
-# Create prisma artifacts
-RUN npx prisma generate
-
 # Move all source code to generate build
 COPY ./src ./src
 
 # Move prisma
 COPY ./prisma ./prisma
+
+# Create prisma artifacts
+RUN npx prisma generate
 
 # Build
 RUN npm run build
