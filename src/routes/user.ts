@@ -1,9 +1,8 @@
 import { type FastifyInstance } from 'fastify'
 import { ListUserController } from '../controllers/list-user-controller'
 import { SignUpUserController } from '../controllers/signup-user-controller'
-import { UserRepositoryPrisma } from '../database/prisma/user-repository-prisma'
+import { makeListUser } from '../factories/list-user-factory'
 import { makeSignupUserFactory } from '../factories/sign-up-user-factory'
-import { ListUsers } from '../usecases/user/list-users'
 
 async function userRoutes (fastify: FastifyInstance) {
   fastify.post('/', {}, async (request, reply) => {
@@ -17,9 +16,7 @@ async function userRoutes (fastify: FastifyInstance) {
   })
 
   fastify.get('/', {}, async (request, reply) => {
-    const prismaUserRepository = new UserRepositoryPrisma()
-
-    const listUsers = new ListUsers(prismaUserRepository)
+    const listUsers = makeListUser()
 
     const controller = new ListUserController(listUsers)
 
