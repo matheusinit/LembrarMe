@@ -19,7 +19,7 @@ export class SignUpUserController {
     private readonly signupUser: SignupUserUsecase
   ) {}
 
-  async handle (request: ControllerRequest): Promise<ControllerResponse<User | HttpError>> {
+  async handle (request: ControllerRequest): Promise<ControllerResponse<User>> {
     try {
       const { firstName, lastName, email, password } = request
 
