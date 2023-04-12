@@ -24,7 +24,5 @@ COPY ./prisma ./prisma
 # Build
 RUN npm run build
 
-RUN ls
-
 # Run server on container entrypoint
 CMD ["node", "dist/server.js"]
