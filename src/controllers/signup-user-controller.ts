@@ -1,5 +1,6 @@
 import { type User } from '@prisma/client'
 import { z } from 'zod'
+import { type ControllerResponse } from '../protocols/controller-response'
 import { type HttpError } from '../protocols/http-error'
 import { type SignupUserUsecase } from '../protocols/signup-user-usecase'
 import { badRequest, internalServerError, ok } from '../utils/http'
@@ -12,11 +13,6 @@ const CreateUserSchema = z.object({
 })
 
 type ControllerRequest = z.infer<typeof CreateUserSchema>
-
-interface ControllerResponse<T> {
-  statusCode: number
-  body: T
-}
 
 export class SignUpUserController {
   constructor (
