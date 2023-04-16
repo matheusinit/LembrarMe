@@ -34,10 +34,28 @@ jobs:
       - name: "📦 docker build"
         uses: docker/build-push-action@v4
         with:
-          context: .
-          tags: matheusinit/nodejs_cicd:latest
-          labels: ${{ steps.meta.outputs.labels }}
-          push: true
+          push: false
+          load: true
+          tags: ${{ github.run_id }}
+
+      - name: Run CVEs scan (Trivy non-blocking)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ github.run_id }}
+          exit-code: 0
+          format: table
+
+      - name: Run Trivy for HIGH,CRITICAL CVEs and report (blocking)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ github.run_id }}
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "HIGH,CRITICAL"
+          format: "sarif"
+          output: "trivy-results.sarif"
+
   release:
     name: Release in deploy server
     needs:
