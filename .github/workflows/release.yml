@@ -85,7 +85,7 @@ jobs:
             docker compose pull
             docker compose up --build -d
 
-            docker image prune
+            docker image prune -f
             rm ./docker-compose.yml
             rm ./default.conf
           ENDSSH
