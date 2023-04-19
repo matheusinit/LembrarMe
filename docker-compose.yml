@@ -9,8 +9,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
-      - ./bundle.crt:/etc/ssl/bundle.crt
-      - ./api_matheusinit_me.key:/etc/ssl/api_matheusinit_me.key
+      - ./matheusinit_me_chain.crt:/etc/ssl/matheusinit_me_chain.crt
+      - ./matheusinit_me.key:/etc/ssl/matheusinit_me.key
   api:
     container_name: remainder_api
     image: matheusinit/nodejs_cicd
